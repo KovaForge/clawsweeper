@@ -31,6 +31,16 @@
         "issue": [],
         "pull_request": ["implemented_on_main"]
       }
+    },
+    {
+      "target_repo": "ShareX/XerahS",
+      "display_name": "XerahS",
+      "checkout_dir": "xerahs",
+      "prompt_note": "Use the XerahS source tree and current default branch. Review ShareX/XerahS issues conservatively. Propose closure only when the current default branch clearly implements or fixes the request, or when another open/closed issue or PR is a clear canonical duplicate or superseding thread. Keep product-roadmap and maintainer-authored XIP issues open unless a narrower canonical follow-up exists.",
+      "apply_close_rules": {
+        "issue": ["implemented_on_main", "duplicate_or_superseded"],
+        "pull_request": ["implemented_on_main", "duplicate_or_superseded"]
+      }
     }
   ],
   "openclaw_fallback": {

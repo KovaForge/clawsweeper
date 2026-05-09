@@ -3232,8 +3232,9 @@ function collectItemContext(item: Item): ItemContext {
 }
 
 function gitInfo(openclawDir: string): GitInfo {
-  run("git", ["fetch", "origin", "main", "--depth=50"], { cwd: openclawDir });
-  const mainSha = run("git", ["rev-parse", "origin/main"], { cwd: openclawDir });
+  const branch = targetDefaultBranch();
+  run("git", ["fetch", "origin", branch, "--depth=50"], { cwd: openclawDir });
+  const mainSha = run("git", ["rev-parse", `origin/${branch}`], { cwd: openclawDir });
   let latestRelease: LatestRelease | null = null;
   try {
     latestRelease = ghJson<LatestRelease>([
@@ -3258,6 +3259,17 @@ function gitInfo(openclawDir: string): GitInfo {
     }
   }
   return { mainSha, latestRelease };
+}
+
+function targetDefaultBranch(): string {
+  try {
+    const repo = ghJson<{ default_branch?: string }>(["api", `repos/${targetRepo()}`]);
+    const branch = repo.default_branch?.trim();
+    if (branch) return branch;
+  } catch {
+    // Preserve the existing default when GitHub metadata is unavailable.
+  }
+  return "main";
 }
 
 export function reviewPromptTemplate(): string {
